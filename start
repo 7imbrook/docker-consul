@@ -2,7 +2,11 @@
 
 main() {
 	set -eo pipefail
-	exec /bin/consul agent -config-dir=/config $@
+
+	curl "http://$etcd_host:4001/v1/keys/consul/master" -XPUT -d value=$(hostname -i)
+	j_node=$(curl "http://$etcd_host:4001/v1/keys/consul/master" | awk -F '"' '{print $12}')
+	echo "Set to join active node $j_node"
+	exec /bin/consul agent -join $j_node -config-dir=/config $@
 }
 
 main "$@"
