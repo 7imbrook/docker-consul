@@ -2,8 +2,7 @@
 
 main() {
 	set -eo pipefail
-	exec /bin/consul agent -config-dir=/config $@;;
-	esac
+	exec /bin/consul agent -config-dir=/config $@
 }
 
 main "$@"
